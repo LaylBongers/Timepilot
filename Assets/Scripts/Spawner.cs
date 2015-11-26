@@ -30,7 +30,7 @@ namespace Assets.Scripts
                 for (var i = 0; i < Count; i++)
                 {
                     var obj = Instantiate(Prefab);
-                    obj.transform.position = _random.NextVector(TargetPlayer.position, Distance);
+                    obj.transform.position = _random.NextVector2D(TargetPlayer.position.Xyn(0), Distance);
                     obj.transform.parent = gameObject.transform;
                     _instances.Add(obj);
                 }
@@ -60,7 +60,7 @@ namespace Assets.Scripts
             {
                 // Make sure the cloud's at one of the edges
                 var otherPos = TargetPlayer.position;
-                var pos = _random.NextVector(otherPos, Distance);
+                var pos = _random.NextVector2D(otherPos, Distance);
                 var axis = _random.Next(2);
                 pos[axis] = _random.Next(2) == 1 ? otherPos[axis] + Distance : otherPos[axis] - Distance;
 

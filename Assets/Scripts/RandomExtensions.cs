@@ -10,13 +10,13 @@ namespace Assets.Scripts
             return (float) random.NextDouble()*max;
         }
 
-        public static Vector3 NextVector(this Random random, Vector3 origin, float distance)
+        public static Vector3 NextVector2D(this Random random, Vector3 origin, float distance)
         {
             var doubleDistance = distance*2;
             return origin + new Vector3(
                 random.NextFloat(doubleDistance) - distance,
                 random.NextFloat(doubleDistance) - distance,
-                random.NextFloat(doubleDistance) - distance);
+                0);
         }
     }
 }
