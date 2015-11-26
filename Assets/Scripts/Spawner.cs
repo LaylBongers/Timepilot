@@ -13,6 +13,7 @@ namespace Assets.Scripts
         public int Count = 20;
         public float Distance = 6;
         public Transform TargetPlayer;
+        public float MinimalInstanceDistance = 0;
 
         public GameObject Prefab;
         public int SeedAddition;
