@@ -22,7 +22,8 @@ namespace Assets.Scripts
 
             // Rotate in the direction of input
             var currentDirection = transform.rotation.eulerAngles.z;
-            transform.rotation = Quaternion.Euler(0, 0,
+            transform.rotation = Quaternion.Euler(
+                0, 0,
                 RotateToWithLimit(currentDirection, targetDirection, RotateSpeed*Time.deltaTime));
 
             // Move in the right direction
