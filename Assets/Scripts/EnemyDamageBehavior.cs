@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -7,8 +6,6 @@ namespace Assets.Scripts
     {
         private void Damage()
         {
-            Mathf.Atan2(0, 0);
-            Math.Atan2(0, 0);
             Destroy(gameObject);
         }
     }
