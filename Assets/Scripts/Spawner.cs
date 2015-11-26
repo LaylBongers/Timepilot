@@ -16,19 +16,23 @@ namespace Assets.Scripts
 
         public GameObject Prefab;
         public int SeedAddition;
+        public bool SpawnInitial = false;
 
         private void Start()
         {
             // Initialize our rng
             _random = new Random(Environment.TickCount + SeedAddition);
 
-            // Spawn in a bunch of clouds initially
-            for (var i = 0; i < Count; i++)
+            if (SpawnInitial)
             {
-                var obj = Instantiate(Prefab);
-                obj.transform.position = _random.NextVector(TargetPlayer.position, Distance);
-                obj.transform.parent = gameObject.transform;
-                _instances.Add(obj);
+                // Spawn in a bunch of instances initially
+                for (var i = 0; i < Count; i++)
+                {
+                    var obj = Instantiate(Prefab);
+                    obj.transform.position = _random.NextVector(TargetPlayer.position, Distance);
+                    obj.transform.parent = gameObject.transform;
+                    _instances.Add(obj);
+                }
             }
         }
 
