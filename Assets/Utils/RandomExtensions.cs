@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Random = System.Random;
 
-namespace Assets.Scripts
+namespace Assets.Utils
 {
     internal static class RandomExtensions
     {

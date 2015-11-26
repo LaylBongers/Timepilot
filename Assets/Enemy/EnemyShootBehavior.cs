@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets.Utils;
+using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Enemy
 {
     public class EnemyShootBehavior : MonoBehaviour
     {

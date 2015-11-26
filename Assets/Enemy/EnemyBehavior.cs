@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Assets.Scripts
+namespace Assets.Enemy
 {
     public class EnemyBehavior : MonoBehaviour
     {

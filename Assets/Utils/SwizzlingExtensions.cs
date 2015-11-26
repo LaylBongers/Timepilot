@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Utils
 {
     internal static class SwizzlingExtensions
     {

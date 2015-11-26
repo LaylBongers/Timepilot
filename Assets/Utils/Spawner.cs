@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Assets.Scripts
+namespace Assets.Utils
 {
     public class Spawner : MonoBehaviour
     {
