@@ -13,19 +13,23 @@ namespace Assets.Enemy
 
         private float _rotateTimer;
         private bool _chaseTarget;
+        private bool _isChasingTarget;
 
         public float MoveSpeed = 1.5f;
-        public float ChaseDistance = 4;
+        public float ChaseDistance = 2;
 
         // Use this for initialization
         private void Start()
         {
-            // Find _target
+            // Find target
             _target = GameObject.Find("Player");
 
             LookNearTarget();
 
             _currentAngle = transform.rotation.eulerAngles.z;
+
+            if (Random.Range(0, 3) == 0)
+                _chaseTarget = false;
 
             // Set random rotate timer
             _rotateTimer = Random.Range(1F, 4F);
@@ -39,7 +43,7 @@ namespace Assets.Enemy
 
             if (Mathf.Abs(distance) >= ChaseDistance) // Too far away to chase
             {
-                _chaseTarget = false;
+                _isChasingTarget = false;
                 _currentAngle = transform.rotation.eulerAngles.z;
 
                 _rotateTimer -= Time.deltaTime;
@@ -61,7 +65,7 @@ namespace Assets.Enemy
             }
             else // Chase target
             {
-                _chaseTarget = true;
+                _isChasingTarget = true;
                 LookAtTarget();
             }
 
@@ -91,7 +95,7 @@ namespace Assets.Enemy
 
         private void Move()
         {
-            if (_chaseTarget)
+            if (_isChasingTarget)
                 transform.position = Vector3.MoveTowards(
                     transform.position, _target.transform.position,
                     MoveSpeed*Time.deltaTime);
@@ -102,3 +106,4 @@ namespace Assets.Enemy
         }
     }
 }
+
