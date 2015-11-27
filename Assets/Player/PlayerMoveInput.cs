@@ -18,7 +18,7 @@ namespace Assets.Player
             var directionVector = new Vector3(
                 Input.mousePosition.x - AimInputCamera.pixelWidth/2.0f,
                 Input.mousePosition.y - AimInputCamera.pixelHeight/2.0f, 0);
-            var targetDirection = Mathf.Rad2Deg*Mathf.Atan2(directionVector.x, -directionVector.y) - 90;
+            var targetDirection = Mathf.Rad2Deg*Mathf.Atan2(directionVector.x, -directionVector.y) + 180;
 
             // Rotate in the direction of input
             var currentDirection = transform.rotation.eulerAngles.z;
@@ -27,7 +27,7 @@ namespace Assets.Player
                 RotateToWithLimit(currentDirection, targetDirection, RotateSpeed*Time.deltaTime));
 
             // Move in the right direction
-            var direction = transform.rotation*Vector3.right;
+            var direction = transform.rotation*Vector3.up;
             transform.position += direction*Time.deltaTime*Speed;
         }
 

@@ -12,7 +12,7 @@ namespace Assets.Utils
         private void Update()
         {
             // Move in the right direction
-            var direction = transform.rotation*Vector3.right;
+            var direction = transform.rotation*Vector3.up;
             transform.position += direction*Time.deltaTime*Speed;
 
             // If we're too far away, despawn

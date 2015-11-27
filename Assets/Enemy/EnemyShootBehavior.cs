@@ -8,10 +8,12 @@ namespace Assets.Enemy
         private float _shootCooldown;
 
         public GameObject BulletPrefab;
+        public float ShootIntervalMin = 2;
+        public float ShootIntervalMax = 3;
 
         private void Start()
         {
-            _shootCooldown = Random.Range(0f, 2f);
+            _shootCooldown = Random.Range(0, ShootIntervalMax);
         }
 
         private void Update()
@@ -26,7 +28,7 @@ namespace Assets.Enemy
                 var bullet = obj.GetComponent<BulletController>();
                 bullet.Player = GameObject.Find("Player");
 
-                _shootCooldown = 2f;
+                _shootCooldown = Random.Range(ShootIntervalMin, ShootIntervalMax);
             }
         }
     }
