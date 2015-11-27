@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Assets.Enemy
+namespace Assets.Utils
 {
-    public class EnemyDamageBehavior : MonoBehaviour
+    public class DamageBehavior : MonoBehaviour
     {
         private void Damage()
         {

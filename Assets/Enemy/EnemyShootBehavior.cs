@@ -1,5 +1,4 @@
-﻿using Assets.Utils;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Enemy
 {
@@ -25,8 +24,6 @@ namespace Assets.Enemy
                 var obj = Instantiate(BulletPrefab);
                 obj.transform.position = transform.position;
                 obj.transform.rotation = transform.rotation;
-                var bullet = obj.GetComponent<BulletController>();
-                bullet.Player = GameObject.Find("Player");
 
                 _shootCooldown = Random.Range(ShootIntervalMin, ShootIntervalMax);
             }

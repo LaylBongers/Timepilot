@@ -12,7 +12,7 @@ namespace Assets.Utils
 
         public int Count = 20;
         public float Distance = 6;
-        public Transform TargetPlayer;
+        public Transform TargetCamera;
         public float MinimalInstanceDistance = 0;
 
         public GameObject Prefab;
@@ -30,7 +30,7 @@ namespace Assets.Utils
                 for (var i = 0; i < Count; i++)
                 {
                     var obj = Instantiate(Prefab);
-                    obj.transform.position = _random.NextVector2D(TargetPlayer.position.Xyn(0), Distance);
+                    obj.transform.position = _random.NextVector2D(TargetCamera.position.Xyn(0), Distance);
                     obj.transform.parent = gameObject.transform;
                     _instances.Add(obj);
                 }
@@ -44,7 +44,7 @@ namespace Assets.Utils
             {
                 // Check if we can keep this instance
                 var instance = _instances[i];
-                if (InstanceExists(instance) && InstanceIsInRange(instance))
+                if (instance != null && InstanceIsInRange(instance))
                 {
                     continue;
                 }
@@ -55,12 +55,12 @@ namespace Assets.Utils
                 i--;
             }
 
-            // Add new clouds if we have to
+            // Add new instances if we have to
             while (_instances.Count < Count)
             {
                 // Make sure the cloud's at one of the edges
-                var otherPos = TargetPlayer.position;
-                var pos = _random.NextVector2D(otherPos, Distance);
+                var otherPos = TargetCamera.position;
+                var pos = _random.NextVector2D(otherPos.Xyn(0), Distance);
                 var axis = _random.Next(2);
                 pos[axis] = _random.Next(2) == 1 ? otherPos[axis] + Distance : otherPos[axis] - Distance;
 
@@ -72,29 +72,23 @@ namespace Assets.Utils
             }
         }
 
-        private bool InstanceExists(GameObject instance)
-        {
-            // Whyyyyyyyy
-            return instance != null;
-        }
-
         private bool InstanceIsInRange(GameObject instance)
         {
-            var ourPos = TargetPlayer.position;
+            var camPos = TargetCamera.position;
             var pos = instance.transform.position;
 
-            return Math.Abs(ourPos.x - pos.x) <= Distance && Math.Abs(ourPos.y - pos.y) <= Distance;
+            return Math.Abs(camPos.x - pos.x) <= Distance && Math.Abs(camPos.y - pos.y) <= Distance;
         }
 
         private void OnDrawGizmosSelected()
         {
-            if (TargetPlayer == null)
+            if (TargetCamera == null)
             {
                 return;
             }
 
             Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(TargetPlayer.position, new Vector3(Distance*2, Distance*2, 0));
+            Gizmos.DrawWireCube(TargetCamera.position, new Vector3(Distance*2, Distance*2, 0));
         }
     }
 }

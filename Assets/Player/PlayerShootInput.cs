@@ -1,5 +1,4 @@
-﻿using Assets.Utils;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Player
 {
@@ -19,8 +18,6 @@ namespace Assets.Player
                     var obj = Instantiate(BulletPrefab);
                     obj.transform.position = transform.position;
                     obj.transform.rotation = transform.rotation;
-                    var bullet = obj.GetComponent<BulletController>();
-                    bullet.Player = gameObject;
 
                     _cooldown = CooldownTime;
                 }

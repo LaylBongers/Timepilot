@@ -35,18 +35,13 @@ namespace Assets.Enemy
         private void Update()
         {
             // Calculate distance to target
-            var distance = Vector3.Distance(transform.position, _target.transform.position);
+            var distance = _target != null ? Vector3.Distance(transform.position, _target.transform.position) : 9999f;
 
             if (Mathf.Abs(distance) >= ChaseDistance) // Too far away to chase
             {
                 _chaseTarget = false;
                 _currentAngle = transform.rotation.eulerAngles.z;
-
-                if (Mathf.Abs(distance) >= 12)
-                {
-                    Destroy(gameObject);
-                }
-
+                
                 _rotateTimer -= Time.deltaTime;
 
                 if (_rotateTimer <= 0)

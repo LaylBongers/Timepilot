@@ -5,9 +5,15 @@ namespace Assets.Utils
 {
     public class BulletController : MonoBehaviour
     {
+        private Transform _camera;
+
         public float DespawnDistance = 20f;
-        public GameObject Player;
         public float Speed = 8f;
+
+        private void Start()
+        {
+            _camera = GameObject.Find("Main Camera").transform;
+        }
 
         private void Update()
         {
@@ -17,7 +23,7 @@ namespace Assets.Utils
 
             // If we're too far away, despawn
             var pos = transform.position;
-            var otherPos = Player.transform.position;
+            var otherPos = _camera.position;
             if (Math.Abs(pos.x - otherPos.x) > DespawnDistance || Math.Abs(pos.y - otherPos.y) > DespawnDistance)
             {
                 Destroy(gameObject);
