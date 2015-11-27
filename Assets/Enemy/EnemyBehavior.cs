@@ -41,7 +41,7 @@ namespace Assets.Enemy
             {
                 _chaseTarget = false;
                 _currentAngle = transform.rotation.eulerAngles.z;
-                
+
                 _rotateTimer -= Time.deltaTime;
 
                 if (_rotateTimer <= 0)
@@ -70,6 +70,11 @@ namespace Assets.Enemy
 
         private void LookAtTarget()
         {
+            if (_target == null)
+            {
+                return;
+            }
+
             var difference = _target.transform.position - transform.position;
             difference.Normalize();
 
