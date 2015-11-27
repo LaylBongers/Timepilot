@@ -111,6 +111,10 @@ namespace Assets.Utils
             return Math.Abs(camPos.x - pos.x) <= Distance && Math.Abs(camPos.y - pos.y) <= Distance;
         }
 
+        /// <summary>
+        ///     Checks if the given position is a valid location for a new instance to be spawned in.
+        ///     If it's valid is determined by distance from other active instances.
+        /// </summary>
         private bool IsValidSpawnPosition(Vector3 pos)
         {
             foreach (var instance in _instances)
