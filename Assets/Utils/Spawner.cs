@@ -13,7 +13,9 @@ namespace Assets.Utils
         public int Count = 20;
         public float Distance = 6;
         public Transform TargetCamera;
-        public float MinimalInstanceDistance = 0;
+
+        [Tooltip("If set to more than 0, will retry spawning if too close to an existing instance.")]
+        public float MinimalSpread = 0;
 
         public GameObject Prefab;
         public int SeedAddition;
@@ -27,10 +29,26 @@ namespace Assets.Utils
             if (SpawnInitial)
             {
                 // Spawn in a bunch of instances initially
-                for (var i = 0; i < Count; i++)
+                var retryCount = 0;
+                while (_instances.Count < Count)
                 {
+                    var pos = _random.NextVector2D(TargetCamera.position.Xyn(0), Distance);
+
+                    // Make sure the instance can be spawned here
+                    if (!IsValidSpawnPosition(pos))
+                    {
+                        retryCount++;
+                        if (retryCount > 10)
+                        {
+                            Debug.LogWarning("Had to early-bail on spawning.");
+                            break;
+                        }
+                        continue;
+                    }
+
+                    // Actually spawn the instance
                     var obj = Instantiate(Prefab);
-                    obj.transform.position = _random.NextVector2D(TargetCamera.position.Xyn(0), Distance);
+                    obj.transform.position = pos;
                     obj.transform.parent = gameObject.transform;
                     _instances.Add(obj);
                 }
@@ -56,6 +74,7 @@ namespace Assets.Utils
             }
 
             // Add new instances if we have to
+            var retryCount = 0;
             while (_instances.Count < Count)
             {
                 // Make sure the cloud's at one of the edges
@@ -63,6 +82,18 @@ namespace Assets.Utils
                 var pos = _random.NextVector2D(otherPos.Xyn(0), Distance);
                 var axis = _random.Next(2);
                 pos[axis] = _random.Next(2) == 1 ? otherPos[axis] + Distance : otherPos[axis] - Distance;
+
+                // Make sure the instance can be spawned here
+                if (!IsValidSpawnPosition(pos))
+                {
+                    retryCount++;
+                    if (retryCount > 10)
+                    {
+                        Debug.LogWarning("Had to early-bail on spawning.");
+                        break;
+                    }
+                    continue;
+                }
 
                 // Create and add the cloud
                 var obj = Instantiate(Prefab);
@@ -78,6 +109,20 @@ namespace Assets.Utils
             var pos = instance.transform.position;
 
             return Math.Abs(camPos.x - pos.x) <= Distance && Math.Abs(camPos.y - pos.y) <= Distance;
+        }
+
+        private bool IsValidSpawnPosition(Vector3 pos)
+        {
+            foreach (var instance in _instances)
+            {
+                var otherPos = instance.transform.position;
+                if (Math.Abs(otherPos.x - pos.x) <= MinimalSpread && Math.Abs(otherPos.y - pos.y) <= MinimalSpread)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private void OnDrawGizmosSelected()
