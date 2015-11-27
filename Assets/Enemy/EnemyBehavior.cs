@@ -16,7 +16,7 @@ namespace Assets.Enemy
         private bool _isChasingTarget;
 
         public float MoveSpeed = 1.5f;
-        public float ChaseDistance = 2;
+        public float ChaseDistance = 3;
 
         // Use this for initialization
         private void Start()
