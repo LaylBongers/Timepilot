@@ -7,8 +7,8 @@ namespace Assets.Enemy
         private float _shootCooldown;
 
         public GameObject BulletPrefab;
-        public float ShootIntervalMin = 2;
-        public float ShootIntervalMax = 3;
+        public float ShootIntervalMin = 6;
+        public float ShootIntervalMax = 16;
 
         private void Start()
         {

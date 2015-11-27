@@ -10,7 +10,7 @@ namespace Assets.Utils
         private readonly List<GameObject> _instances = new List<GameObject>();
         private Random _random;
 
-        public int Count = 20;
+        public int Count = 10;
         public float Distance = 6;
         public Transform TargetCamera;
         public float MinimalInstanceDistance = 0;
