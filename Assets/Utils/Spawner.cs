@@ -9,6 +9,7 @@ namespace Assets.Utils
     {
         private readonly List<GameObject> _instances = new List<GameObject>();
         private Random _random;
+        private float _spawnDelayTimer;
 
         public int Count = 10;
         public float Distance = 6;
@@ -16,6 +17,11 @@ namespace Assets.Utils
 
         [Tooltip("If set to more than 0, will retry spawning if too close to an existing instance.")]
         public float MinimalSpread = 0;
+
+        [Tooltip(
+            "If set to more than 0, will wait this amount in seconds between spawning." +
+            "This does not apply to the initial spawn.")]
+        public float SpawnDelay = 0;
 
         public GameObject Prefab;
         public int SeedAddition;
@@ -73,10 +79,28 @@ namespace Assets.Utils
                 i--;
             }
 
+            // Check how many times we're allowed to spawn this frame
+            var allowedSpawns = 0;
+            if (Math.Abs(SpawnDelay) > 0.01f)
+            {
+                _spawnDelayTimer += Time.deltaTime;
+                while (_spawnDelayTimer >= SpawnDelay)
+                {
+                    _spawnDelayTimer -= SpawnDelay;
+                    allowedSpawns++;
+                }
+            }
+            else
+            {
+                allowedSpawns = 9999;
+            }
+
             // Add new instances if we have to
             var retryCount = 0;
-            while (_instances.Count < Count)
+            while (_instances.Count < Count && allowedSpawns > 0)
             {
+                allowedSpawns -= 1;
+
                 // Make sure the cloud's at one of the edges
                 var otherPos = TargetCamera.position;
                 var pos = _random.NextVector2D(otherPos.Xyn(0), Distance);
