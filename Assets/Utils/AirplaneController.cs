@@ -4,25 +4,39 @@ namespace Assets.Utils
 {
     public class AirplaneController : MonoBehaviour
     {
+        private Transform _innerModel;
+
         public Vector3 TargetPosition;
         public float Speed = 2f;
         public float RotateSpeed = 40f;
-        
+
+        private void Start()
+        {
+            _innerModel = transform.childCount == 0 ? null : transform.GetChild(0);
+        }
+
         private void Update()
         {
             // Get the direction to rotate to
             var directionVector = TargetPosition - transform.position;
-            var targetDirection = Mathf.Rad2Deg * Mathf.Atan2(directionVector.x, -directionVector.y) + 180;
+            var targetDirection = Mathf.Rad2Deg*Mathf.Atan2(directionVector.x, -directionVector.y) + 180;
 
             // Rotate in the direction of the target
             var currentDirection = transform.rotation.eulerAngles.z;
-            transform.rotation = Quaternion.Euler(
-                0, 0,
-                RotateToWithLimit(currentDirection, targetDirection, RotateSpeed * Time.deltaTime));
+            var resultDirection = RotateToWithLimit(currentDirection, targetDirection, RotateSpeed*Time.deltaTime);
+            transform.rotation = Quaternion.Euler(0, 0, resultDirection);
+
+            // If we have an inner model, rotate that around for effect
+            if (_innerModel != null)
+            {
+                var innerCurrent = _innerModel.localEulerAngles;
+                innerCurrent.y = -resultDirection;
+                _innerModel.localEulerAngles = innerCurrent;
+            }
 
             // Move in the right direction
-            var direction = transform.rotation * Vector3.up;
-            transform.position += direction * Time.deltaTime * Speed;
+            var direction = transform.rotation*Vector3.up;
+            transform.position += direction*Time.deltaTime*Speed;
         }
 
         private static float RotateToWithLimit(float source, float target, float limit)
@@ -54,7 +68,7 @@ namespace Assets.Utils
 
         private static float DegMod(float value)
         {
-            return (value % 360f + 360f) % 360f;
+            return (value%360f + 360f)%360f;
         }
     }
 }
