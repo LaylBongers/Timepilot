@@ -1,11 +1,14 @@
 ﻿using System;
+using Assets.Utils;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Assets.Enemy
 {
+    [RequireComponent(typeof (AirplaneController))]
     public class EnemyBehavior : MonoBehaviour
     {
+        private AirplaneController _controller;
         private GameObject _target;
 
         /// The direction we're currently moving in euler angles (when not chasing a _target)
@@ -15,12 +18,13 @@ namespace Assets.Enemy
         private bool _chaseTarget;
         private bool _isChasingTarget;
 
-        public float MoveSpeed = 1.5f;
         public float ChaseDistance = 3;
 
         // Use this for initialization
         private void Start()
         {
+            _controller = gameObject.GetComponent<AirplaneController>();
+
             // Find target
             _target = GameObject.Find("Player");
 
@@ -43,6 +47,9 @@ namespace Assets.Enemy
 
             if (Mathf.Abs(distance) >= ChaseDistance) // Too far away to chase
             {
+                // TODO: Change to use the airplane controller instead of disabling it and taking over
+                _controller.enabled = false;
+
                 _isChasingTarget = false;
                 _currentAngle = transform.rotation.eulerAngles.z;
 
@@ -62,14 +69,14 @@ namespace Assets.Enemy
                     transform.rotation = Quaternion.RotateTowards(transform.rotation,
                         Quaternion.Euler(0, 0, _currentAngle + 90), 10F*Time.deltaTime);
                 }
+
+                Move();
             }
             else // Chase target
             {
-                _isChasingTarget = true;
-                LookAtTarget();
+                _controller.enabled = true;
+                _controller.TargetPosition = _target.transform.position;
             }
-
-            Move();
         }
 
         private void LookAtTarget()
@@ -98,12 +105,11 @@ namespace Assets.Enemy
             if (_isChasingTarget)
                 transform.position = Vector3.MoveTowards(
                     transform.position, _target.transform.position,
-                    MoveSpeed*Time.deltaTime);
+                    _controller.Speed*Time.deltaTime);
             else
             {
-                transform.position += transform.up*MoveSpeed*Time.deltaTime;
+                transform.position += transform.up*_controller.Speed*Time.deltaTime;
             }
         }
     }
 }
-
