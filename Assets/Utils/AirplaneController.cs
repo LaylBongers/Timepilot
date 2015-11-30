@@ -31,7 +31,17 @@ namespace Assets.Utils
             {
                 var innerCurrent = _innerModel.localEulerAngles;
                 innerCurrent.y = -resultDirection;
+
+                if (innerCurrent.y <= -90 && innerCurrent.y >= -270)
+                {
+                    innerCurrent.y = -180 - innerCurrent.y;
+                }
+
                 _innerModel.localEulerAngles = innerCurrent;
+                if (gameObject.name == "Player")
+                {
+                    Debug.Log(string.Format("{0}", innerCurrent.y));
+                }
             }
 
             // Move in the right direction
